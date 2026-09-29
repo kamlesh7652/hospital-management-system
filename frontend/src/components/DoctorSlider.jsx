@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 // Photos: frontend/public/doctors/ me doc1.jpg, doc2.jpg ... rakho
 const doctors = [
-  { name: 'Dr. Ananya Rao', dept: 'Cardiology', exp: '12 years', img: '/doctors/doc1.jpg' },
-  { name: 'Dr. Rohan Mehta', dept: 'Orthopedics', exp: '9 years', img: '/doctors/doc2.jpg' },
-  { name: 'Dr. Sneha Kapoor', dept: 'Pediatrics', exp: '8 years', img: '/doctors/doc3.jpg' },
-  { name: 'Dr. Imran Khan', dept: 'General Medicine', exp: '15 years', img: '/doctors/doc4.jpg' },
-  { name: 'Dr. Priya Nair', dept: 'Dermatology', exp: '7 years', img: '/doctors/doc5.jpg' },
-  { name: 'Dr. Vikram Singh', dept: 'Gynecology', exp: '11 years', img: '/doctors/doc6.jpg' },
+  { name: 'Dr. Ananya Rao', dept: 'Cardiology', exp: '12 years', img: '/doctors/team.jpg' },
+  { name: 'Dr. Rohan Mehta', dept: 'Orthopedics', exp: '9 years', img: '/doctors/team2.jpg' },
+  { name: 'Dr. Sneha Kapoor', dept: 'Pediatrics', exp: '8 years', img: '/doctors/team3.jpg' },
+  { name: 'Dr. Imran Khan', dept: 'General Medicine', exp: '15 years', img: '/doctors/team.jpg' },
+  { name: 'Dr. Priya Nair', dept: 'Dermatology', exp: '7 years', img: '/doctors/team2.jpg' },
+  { name: 'Dr. Vikram Singh', dept: 'Gynecology', exp: '11 years', img: '/doctors/team3.jpg' },
 ];
 
 function Photo({ name, img }) {
