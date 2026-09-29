@@ -1,23 +1,16 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Topbar from '../components/Topbar';
-import Features from '../components/Features';
-import AppointmentCard from '../components/AppointmentCard';
-import Testimonials from '../components/Testimonials';
-import Faq from '../components/Faq';
-import News from '../components/News';
 import DoctorSlider from '../components/DoctorSlider';
 import '../components/extras.css';
-import '../components/extras2.css';
 
 const departments = [
-  ['🫀', 'Cardiology', 'Heart and blood pressure'],
-  ['🦴', 'Orthopedics', 'Bones, joints and injuries'],
-  ['🧒', 'Pediatrics', 'Care for children'],
-  ['👩', 'Gynecology', "Women's health"],
-  ['🩹', 'Dermatology', 'Skin, hair and nails'],
-  ['🩺', 'General Medicine', 'Fever, infections, check-ups'],
+  ['Cardiology', 'Heart and blood pressure'],
+  ['Orthopedics', 'Bones, joints and injuries'],
+  ['Pediatrics', 'Care for children'],
+  ['Gynecology', "Women's health"],
+  ['Dermatology', 'Skin, hair and nails'],
+  ['General Medicine', 'Fever, infections, check-ups'],
 ];
 
 const steps = [
@@ -29,7 +22,6 @@ const steps = [
 export default function Landing() {
   return (
     <>
-      <Topbar />
       <Navbar />
       <main>
         <section className="hero">
@@ -40,14 +32,19 @@ export default function Landing() {
                 Book appointments, keep your medical records and pay bills in one place. No paper files, no repeat visits to the counter.
               </p>
               <div className="hero-cta">
-                <a href="#doctors" className="btn">Meet our doctors</a>
+                <Link to="/register" className="btn btn-primary">Book an appointment</Link>
+                <a href="#how" className="btn">See how it works</a>
               </div>
             </div>
-            <AppointmentCard />
+            <div className="slip" aria-label="Sample appointment token">
+              <div className="slip-top"><span>OPD token</span><span>Today</span></div>
+              <div className="slip-token">#14</div>
+              <div className="slip-doc">Dr. Ananya Rao</div>
+              <div className="slip-meta">Cardiology · 10:30 AM · Room 204</div>
+              <span className="slip-status">Confirmed</span>
+            </div>
           </div>
         </section>
-
-        <Features />
 
         <section className="stats" aria-label="Hospital in numbers">
           <div className="wrap">
@@ -68,15 +65,11 @@ export default function Landing() {
           <div className="wrap">
             <h2>Departments</h2>
             <p className="lead">Choose a department and see which doctors are available today.</p>
-            <div className="dept-grid">
-              {departments.map(([icon, name, desc]) => (
-                <div className="dept-card" key={name}>
-                  <span className="dept-icon">{icon}</span>
-                  <h3>{name}</h3>
-                  <p>{desc}</p>
-                </div>
+            <ul className="dept-list">
+              {departments.map(([name, desc]) => (
+                <li key={name}><b>{name}</b><span>{desc}</span></li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
@@ -110,12 +103,6 @@ export default function Landing() {
             </div>
           </div>
         </section>
-
-        <Testimonials />
-
-        <News />
-
-        <Faq />
 
         <section className="cta">
           <h2>Ready to book your first visit?</h2>
