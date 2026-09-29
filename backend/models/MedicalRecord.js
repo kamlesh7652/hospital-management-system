@@ -33,7 +33,24 @@ const medicalRecordSchema = new mongoose.Schema(
 
         notes: {
             type: String
-        }
+        },
+        visitDate: {
+            type: Date,
+            default: Date.now
+        },
+        testReports: [
+            {
+                testName: {
+                    type: String,
+                    required: true
+                },
+                result: String,
+                reportDate: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        ],
     },
     {
         timestamps: true

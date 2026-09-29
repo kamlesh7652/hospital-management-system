@@ -32,7 +32,8 @@ const register = async (req, res) => {
             email,
             password: hashedPassword,
             phone,
-            role: role || "patient"
+            // role: role || "patient"
+            role: "patient"
         });
 
         // 5. Response
@@ -134,8 +135,72 @@ const login = async (req, res) => {
         });
     }
 };
+// Logged-in user ki details (protect middleware req.user set karta hai)
+const getMe = async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        data: req.user
+    });
+};
+
+// JWT stateless hota hai, isliye token client apne paas se delete karega
+const logout = async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        message: "Logged out successfully"
+    });
+};
+
+// Sirf admin: doctor / receptionist / pharmacist / admin banane ke liye
+const createUser = async (req, res) => {
+    try {
+        const { name, email, password, phone, role } = req.body;
+
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                message: "Email already registered"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            phone,
+            role
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: `${role} created successfully`,
+            data: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+
+    } catch (error) {
+        console.error("Create User Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+    }
+};
 
 module.exports = {
     register,
-    login
+    login,
+    getMe,
+    logout,
+    createUser
 };

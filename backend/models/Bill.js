@@ -34,7 +34,7 @@ const billSchema = new mongoose.Schema(
 
         paymentStatus: {
             type: String,
-            enum: ["pending", "paid", "cancelled"],
+            enum: ["pending", "paid", "cancelled","partially_paid","paidAmount"],
             default: "pending"
         }
     },
