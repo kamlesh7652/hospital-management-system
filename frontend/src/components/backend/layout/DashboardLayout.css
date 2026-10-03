@@ -1,0 +1,101 @@
+.dash {
+  --sb-w: 240px;
+  display: flex;
+  min-height: 100vh;
+  background: var(--paper);
+}
+
+.dash-sidebar {
+  width: var(--sb-w);
+  flex-shrink: 0;
+  background: var(--teal-d);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.dash-logo {
+  font: 800 1.3rem 'Bricolage Grotesque', sans-serif;
+  color: #fff;
+  padding: 8px 10px 22px;
+}
+.dash-menu { display: flex; flex-direction: column; gap: 4px; }
+.dash-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  color: #cfe6e3;
+  font-weight: 500;
+  font-size: .95rem;
+}
+.dash-link:hover { background: rgba(255,255,255,.08); color: #fff; }
+.dash-link.active { background: var(--teal); color: #fff; }
+
+.dash-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.dash-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.dash-burger {
+  display: none;
+  border: none;
+  background: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+.dash-role {
+  text-transform: capitalize;
+  background: var(--mint);
+  color: var(--teal-d);
+  font-size: .8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+.dash-user { margin-left: auto; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+.dash-user .btn { padding: 7px 14px; }
+
+.dash-content { flex: 1; padding: 32px 24px; }
+
+.dash-footer {
+  padding: 16px 24px;
+  color: var(--muted);
+  font-size: .85rem;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+.dash-overlay { display: none; }
+
+@media (max-width: 900px) {
+  .dash-sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    z-index: 20;
+  }
+  .sidebar-open .dash-sidebar { transform: translateX(0); }
+  .dash-burger { display: inline-block; }
+  .dash-overlay {
+    display: block;
+    position: fixed; inset: 0;
+    background: rgba(16,38,46,.4);
+    z-index: 15;
+  }
+}

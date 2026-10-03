@@ -3,11 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import Topbar from '../components/Topbar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import api from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 import '../components/AuthCard.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
@@ -34,11 +35,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // Field names must match your backend's authController / User model
-      const { data } = await api.post('/auth/login', form);
-
-      if (data.token) localStorage.setItem('token', data.token);
-      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      await login(form.email, form.password);
       navigate('/home');
     } catch (err) {
       setServerError(err.response?.data?.message || 'Invalid email or password.');

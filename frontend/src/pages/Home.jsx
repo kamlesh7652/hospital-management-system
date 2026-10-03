@@ -1,6 +1,6 @@
-import { Link, Navigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
+import DashboardLayout from '../components/backend/layout/DashboardLayout';
+import { useAuth } from '../context/AuthContext';
 
 const actions = {
   patient: [
@@ -19,33 +19,32 @@ const actions = {
     ['Medicines', 'Manage stock and prices', '/admin/medicines'],
     ['Bills', 'Generate and review bills', '/admin/bills'],
   ],
+  receptionist: [
+    ['Appointments', 'Book or update patient appointments', '/reception/appointments'],
+    ['Patients', 'Register and search patients', '/reception/patients'],
+  ],
+  pharmacist: [
+    ['Medicines', 'Manage stock and prices', '/pharmacy/medicines'],
+    ['Prescriptions', 'View and dispense prescriptions', '/pharmacy/prescriptions'],
+  ],
 };
 
 export default function Home() {
-  // Day 2 me AuthContext se user lena; abhi localStorage se
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
-  if (!user) return <Navigate to="/login" replace />;
-
-  const items = actions[user.role] || [];
+  const { user } = useAuth();
+  const items = actions[user?.role] || [];
 
   return (
-    <>
-      <Navbar />
-      <main className="home">
-        <div className="wrap">
-          <h1>Welcome, {user.name}</h1>
-          <p className="lead">Here is what you can do today.</p>
-          <div className="actions">
-            {items.map(([title, text, to]) => (
-              <Link key={to} to={to} className="action">
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </>
+    <DashboardLayout>
+      <h1>Welcome, {user?.name}</h1>
+      <p className="lead">Here is what you can do today.</p>
+      <div className="actions">
+        {items.map(([title, text, to]) => (
+          <Link key={to} to={to} className="action">
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </Link>
+        ))}
+      </div>
+    </DashboardLayout>
   );
 }

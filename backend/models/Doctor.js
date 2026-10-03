@@ -25,16 +25,19 @@ const doctorSchema = new mongoose.Schema(
 
         experience: {
             type: Number,
-            default: 0
+            default: 0,
+            min: 0
         },
 
         consultationFee: {
             type: Number,
-            default: 0
+            default: 0,
+            min: 0
         },
 
         availableDays: [{
-            type: String
+            type: String,
+            enum: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         }]
     },
     {
