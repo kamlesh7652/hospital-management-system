@@ -35,7 +35,13 @@ const patientSchema = new mongoose.Schema(
             name: String,
             phone: String,
             relation: String
-        }
+        },
+         source: {
+            type: String,
+            enum: ["self", "admin"],
+            default: "admin"
+        },
+        createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
     {
         timestamps: true

@@ -38,25 +38,22 @@ export default function Register() {
   };
 
   const submit = async (e) => {
-    e.preventDefault();
-    setServerError('');
-    if (!validate()) return;
+  e.preventDefault();
+  setServerError('');
+  if (!validate()) return;
 
-    setLoading(true);
-    try {
-      // Field names must match your backend's authController / User model
-      const { confirmPassword, ...payload } = form;
-      const { data } = await api.post('/auth/register', { ...payload, role: 'patient' });
+  setLoading(true);
+  try {
+    const { confirmPassword, dob, ...rest } = form;
+    await api.post('/auth/register', { ...rest, dateOfBirth: dob });
 
-      if (data.token) localStorage.setItem('token', data.token);
-      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-      navigate('/home');
-    } catch (err) {
-      setServerError(err.response?.data?.message || 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    navigate('/login');
+  } catch (err) {
+    setServerError(err.response?.data?.message || 'Registration failed. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
@@ -102,7 +99,14 @@ export default function Register() {
 
             <div className={`field${errors.dob ? ' invalid' : ''}`}>
               <label htmlFor="dob">Date of birth</label>
-              <input id="dob" name="dob" type="date" value={form.dob} onChange={change} />
+             <input
+                id="dob"
+                name="dob"
+                type="date"
+                max={new Date().toISOString().split('T')[0]}
+                value={form.dob}
+                onChange={change}
+              />
               {errors.dob && <span className="field-error">{errors.dob}</span>}
             </div>
 

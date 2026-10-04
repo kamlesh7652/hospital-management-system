@@ -1,11 +1,16 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const Patient = require("../models/Patient");
 const jwt = require("jsonwebtoken");
+
+
 const register = async (req, res) => {
     try {
-        const { name, email, password, phone, role } = req.body;
+        // role yahan jaan-bujhkar nahi liya, public register hamesha patient banata hai
+        //const { name, email, password, phone } = req.body;
 
-        // 1. Required fields check
+        const { name, email, password, phone, dateOfBirth, gender } = req.body;
+
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
@@ -13,8 +18,7 @@ const register = async (req, res) => {
             });
         }
 
-        // 2. Check existing user
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
 
         if (existingUser) {
             return res.status(409).json({
@@ -23,20 +27,30 @@ const register = async (req, res) => {
             });
         }
 
-        // 3. Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // 4. Create user
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
             phone,
-            // role: role || "patient"
             role: "patient"
         });
 
-        // 5. Response
+        // Patient profile bhi banao, warna admin ki patient list me nahi dikhega
+        try {
+            await Patient.create({
+                user: user._id,
+                dateOfBirth: dateOfBirth || undefined,
+                gender: gender || undefined,
+                source: "self",
+                createdBy: user._id
+            });
+        } catch (err) {
+            await User.findByIdAndDelete(user._id); // adhoora user na bache
+            throw err;
+        }
+
         return res.status(201).json({
             success: true,
             message: "User registered successfully",
@@ -49,13 +63,13 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
-       console.error("Register Error:", error);
+        console.error("Register Error:", error);
 
-    return res.status(500).json({
-        success: false,
-        message: "Server error",
-        error: error.message
-    });
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
     }
 };
 
@@ -155,7 +169,12 @@ const logout = async (req, res) => {
 const createUser = async (req, res) => {
     try {
         const { name, email, password, phone, role } = req.body;
-
+         if (!role || role === "patient") {
+                return res.status(400).json({
+                    success: false,
+                    message: "Use the patients module to create patients"
+                });
+            }
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {

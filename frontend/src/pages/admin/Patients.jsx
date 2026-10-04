@@ -26,7 +26,7 @@ export default function Patients() {
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
     const [total, setTotal] = useState(0);
-
+    const [formKey, setFormKey] = useState(0);   
     // edit form ka initial value sirf tab badle jab editing badle
     const initialForm = useMemo(() => (editing ? toForm(editing) : null), [editing]);
 
@@ -81,6 +81,7 @@ export default function Patients() {
                 await createPatient(payload);
                 setMsg({ type: "success", text: "Patient added successfully" });
             }
+            setFormKey((k) => k + 1);
             load();
         } catch (err) {
             setMsg({ type: "error", text: errorText(err) });
@@ -120,9 +121,10 @@ export default function Patients() {
             )}
 
             <PatientForm
+                key={formKey}
                 initial={initialForm}
                 onSubmit={handleSubmit}
-                onCancel={() => setEditing(null)}
+                 onCancel={() => { setEditing(null); setFormKey((k) => k + 1); }}
                 loading={saving}
             />
 
