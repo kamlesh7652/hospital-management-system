@@ -82,7 +82,7 @@ export default function Register() {
             <div className="auth-row">
               <div className={`field${errors.phone ? ' invalid' : ''}`}>
                 <label htmlFor="phone">Phone</label>
-                <input id="phone" name="phone" value={form.phone} onChange={change} placeholder="98765 43210" />
+                <input id="phone" name="phone" value={form.phone} onChange={change} placeholder="98765 43210" maxLength={10}/>
                 {errors.phone && <span className="field-error">{errors.phone}</span>}
               </div>
               <div className={`field${errors.gender ? ' invalid' : ''}`}>

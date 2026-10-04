@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import Doctors from './pages/admin/Doctors';
 import ProtectedRoute from './components/ProtectedRoute';
 import Patients from "./pages/admin/Patients";
+import Medicines from "./pages/admin/Medicines";
+import Bills from "./pages/admin/Bills";
 
 export default function App() {
   return (
@@ -27,18 +29,35 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-       <Route
-          path="/admin/patients"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <Patients />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/admin/patients"
+        element={
+          <ProtectedRoute roles={["admin"]}>
+            <Patients />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/medicines"
+        element={
+          <ProtectedRoute roles={["admin"]}>
+            <Medicines />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/bills"
+        element={
+          <ProtectedRoute roles={["admin"]}>
+            <Bills />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

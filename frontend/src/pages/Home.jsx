@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import DashboardLayout from '../components/backend/layout/DashboardLayout';
 import { useAuth } from '../context/AuthContext';
 import { fetchPatients } from '../api/patientApi';
-import { fetchDoctors } from '../api/doctors';// apni file ka sahi naam/path rakhna
+import { fetchDoctors } from '../api/doctors';
+import { fetchMedicines } from '../api/medicines';
 
 // limit: 1 isliye ki sirf total chahiye, poora data nahi
 const counters = {
   doctors: () => fetchDoctors(),
   patients: () => fetchPatients({ page: 1, limit: 1 }),
+  medicines: () => fetchMedicines({ page: 1, limit: 1 }),
 };
 
 const actions = {
@@ -25,7 +27,7 @@ const actions = {
   admin: [
     ['Doctors', 'Add, edit or remove doctors', '/admin/doctors', 'doctors'],
     ['Patients', 'View all registered patients', '/admin/patients', 'patients'],
-    ['Medicines', 'Manage stock and prices', '/admin/medicines'],
+    ['Medicines', 'Manage stock and prices', '/admin/medicines', 'medicines'],
     ['Bills', 'Generate and review bills', '/admin/bills'],
   ],
   receptionist: [
