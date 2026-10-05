@@ -61,10 +61,11 @@ const billSchema = new mongoose.Schema(
             default: "pending"
         },
 
-        paymentMethod: {
-            type: String,
-            enum: ["cash", "card", "upi"]
-        },
+        // paymentMethod: {
+        //     type: String,
+        //     enum: ["cash", "card", "upi"]
+        // },
+        paymentMethod: { type: String, enum: ["cash", "card", "upi", "netbanking", "wallet"] },
 
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
@@ -94,7 +95,7 @@ billSchema.pre("validate", function (next) {
         else this.paymentStatus = "pending";
     }
 
-    next();
+    
 });
 
 module.exports = mongoose.model("Bill", billSchema);

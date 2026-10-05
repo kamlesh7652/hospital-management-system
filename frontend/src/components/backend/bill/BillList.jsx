@@ -1,4 +1,4 @@
-import { FaEye, FaMoneyBillWave, FaBan } from "react-icons/fa";
+import { FaEye, FaMoneyBillWave, FaCreditCard, FaBan } from "react-icons/fa";
 import { money, patientName, STATUS_LABELS } from "./billUtils";
 
 const BADGE = {
@@ -8,7 +8,7 @@ const BADGE = {
     cancelled: "bill-badge-danger"
 };
 
-const BillList = ({ bills, onView, onPay, onCancel }) => {
+const BillList = ({ bills, onView, onPay, onPayOnline, onCancel }) => {
     if (bills.length === 0) {
         return <p className="bill-empty">Koi bill nahi mila.</p>;
     }
@@ -53,8 +53,13 @@ const BillList = ({ bills, onView, onPay, onCancel }) => {
                                             <FaEye />
                                         </button>
                                         {canPay && (
-                                            <button title="Add payment" onClick={() => onPay(b)} className="bill-icon-btn pay">
+                                            <button title="Add payment (cash/manual)" onClick={() => onPay(b)} className="bill-icon-btn pay">
                                                 <FaMoneyBillWave />
+                                            </button>
+                                        )}
+                                        {canPay && onPayOnline && (
+                                            <button title="Pay online (UPI/Card)" onClick={() => onPayOnline(b)} className="bill-icon-btn pay">
+                                                <FaCreditCard />
                                             </button>
                                         )}
                                         {canCancel && (

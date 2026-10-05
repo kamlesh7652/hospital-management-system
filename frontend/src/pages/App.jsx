@@ -4,6 +4,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Doctors from './pages/admin/Doctors';
+import Patients from './pages/admin/Patients';
+import Medicines from './pages/admin/Medicines';
+import Bills from './pages/admin/Bills';
 import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
@@ -25,6 +28,30 @@ export default function App() {
         element={
           <ProtectedRoute roles={['admin']}>
             <Doctors />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/patients"
+        element={
+          <ProtectedRoute roles={['admin']}>
+            <Patients />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/medicines"
+        element={
+          <ProtectedRoute roles={['admin']}>
+            <Medicines />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/bills"
+        element={
+          <ProtectedRoute roles={['admin']}>
+            <Bills />
           </ProtectedRoute>
         }
       />

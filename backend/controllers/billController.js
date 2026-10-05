@@ -96,6 +96,7 @@ exports.createBill = async (req, res) => {
 };
 
 // GET /api/bills?status=pending&patient=<id>&page=1&limit=10
+// GET /api/bills?status=pending&patient=<id>&page=1&limit=10
 exports.getBills = async (req, res) => {
     try {
         const { status, patient, page = 1, limit = 10 } = req.query;
@@ -107,7 +108,7 @@ exports.getBills = async (req, res) => {
 
         const [bills, total] = await Promise.all([
             Bill.find(filter)
-                .populate("patient")
+                .populate({ path: "patient", populate: { path: "user", select: "name email phone" } })
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(Number(limit)),
@@ -129,7 +130,9 @@ exports.getBills = async (req, res) => {
 // GET /api/bills/:id
 exports.getBillById = async (req, res) => {
     try {
-        const bill = await Bill.findById(req.params.id).populate("patient").populate("appointment");
+        const bill = await Bill.findById(req.params.id)
+            .populate({ path: "patient", populate: { path: "user", select: "name email phone" } })
+            .populate("appointment");
         if (!bill) return res.status(404).json({ success: false, message: "Bill not found" });
         res.json({ success: true, data: bill });
     } catch (error) {
@@ -174,6 +177,7 @@ exports.cancelBill = async (req, res) => {
 
         res.json({ success: true, data: bill });
     } catch (error) {
+         console.log(err.response?.data,'checking');
         res.status(error.status || 400).json({ success: false, message: error.message });
     }
 };

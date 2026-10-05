@@ -7,12 +7,19 @@ const doctorRoutes = require("./routes/doctorRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const medicineRoutes = require("./routes/medicineRoutes");
 const billRoutes = require("./routes/billRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
+
+const { webhook } = require("./controllers/paymentController");
 
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173" }));
-app.use(express.json());
 app.use(morgan("dev"));
+
+// webhook ko express.json() se PEHLE rakhna hai (raw body chahiye)
+app.post("/api/payments/webhook", express.raw({ type: "application/json" }), webhook);
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.json({
@@ -25,6 +32,7 @@ app.use("/api/doctors", doctorRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/medicines", medicineRoutes);
 app.use("/api/bills", billRoutes);
+app.use("/api/payments", paymentRoutes);
 
 // 404 handler
 app.use((req, res) => {

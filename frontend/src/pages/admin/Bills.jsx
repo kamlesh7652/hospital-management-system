@@ -5,6 +5,7 @@ import BillForm from "../../components/backend/bill/BillForm";
 import BillList from "../../components/backend/bill/BillList";
 import { PaymentModal, BillDetailModal } from "../../components/backend/bill/BillModals";
 import { fetchBills, createBill, addBillPayment, cancelBill } from "../../api/bills";
+import { payOnline } from "../../api/payments";
 import { fetchPatients } from "../../api/patientApi";
 import { fetchMedicines } from "../../api/medicines";
 import "../../components/backend/bill/bill.css";
@@ -107,6 +108,15 @@ const Bills = () => {
         }
     };
 
+    const handlePayOnline = (bill) =>
+        payOnline(bill, {
+            onSuccess: () => {
+                showMessage("success", "Online payment ho gayi");
+                load();
+            },
+            onError: (msg) => showMessage("error", msg)
+        });
+
     const handleCancel = async (bill) => {
         if (!window.confirm(`${bill.billNumber} cancel karna hai? Medicine ka stock wapas ho jayega.`)) return;
         try {
@@ -173,6 +183,7 @@ const Bills = () => {
                             bills={bills}
                             onView={setViewTarget}
                             onPay={setPayTarget}
+                            onPayOnline={handlePayOnline}
                             onCancel={handleCancel}
                         />
                     )}
